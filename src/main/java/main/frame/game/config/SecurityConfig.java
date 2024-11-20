@@ -1,7 +1,7 @@
 package main.frame.game.config;
 
 import lombok.AllArgsConstructor;
-import main.frame.game.security.JwtRequestFilter;
+import main.frame.game.filter.JwtRequestFilter;
 import main.frame.game.utils.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,9 +31,6 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)  // Отключаем CSRF для REST API
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/register", "/auth/login").permitAll()
-                        .requestMatchers("/auth/user").authenticated()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/", "/index", "/registration").permitAll()
                         .requestMatchers("/static/**").permitAll()
                         .anyRequest().authenticated()
                 )

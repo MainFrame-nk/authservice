@@ -1,11 +1,10 @@
-package main.frame.game.security;
+package main.frame.game.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import main.frame.game.utils.JwtUtil;
-import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -43,6 +43,15 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (path.equals("/auth/login") || path.equals("/auth/register")) {
             chain.doFilter(request, response);
             return;
+        }
+
+        System.out.println("Фильтр вызван для URI: " + request.getRequestURI());
+        Enumeration<String> headerNames = request.getHeaderNames();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String header = headerNames.nextElement();
+                System.out.println("Header: " + header + " -> " + request.getHeader(header));
+            }
         }
 
         //final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);

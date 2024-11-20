@@ -27,19 +27,7 @@ public class JwtUtil {
         // Генерация ключа из строки
         this.secretKey = new SecretKeySpec(secretKeyString.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
-    // Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Генерация ключа
 
-    //private final String SECRET_KEY = "lumix";  // Лучше использовать переменные среды для хранения ключа
-//    @Value("${jwt.secret}")
-//    private final SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Генерация секретного ключа
-    //    private final SecretKey secretKey;
-//    private final long expirationMs;
-//
-//    @Autowired
-//    public JwtUtil(JwtConfig jwtConfig) {
-//        this.secretKey = Keys.hmacSha256(jwtConfig.getSecret());
-//        this.expirationMs = jwtConfig.getExpirationMs();
-//    }
     public String generateToken(String email) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, email);
@@ -51,21 +39,10 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
-                .signWith(secretKey)
+                .signWith(secretKey, SignatureAlgorithm.HS256) // Указываем алгоритм и ключ
+                .setHeaderParam("typ", "JWT") // Добавляем тип токена
                 .compact();
     }
-
-//    public String generateToken(UserDetails userDetails) {
-//        Map<String, Object> claims = new HashMap<>();
-//        return Jwts.builder()
-//                .setClaims(claims)
-//                .setSubject(userDetails.getUsername())
-//                .setIssuedAt(new Date(System.currentTimeMillis()))
-//                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)) // 10 часов
-//                .signWith(SignatureAlgorithm.HS256, secret)
-//                .compact();
-//    }
-
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);

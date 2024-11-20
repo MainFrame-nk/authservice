@@ -1,6 +1,6 @@
 package main.frame.game.service;
 
-import main.frame.game.utils.JwtUtil2;
+import main.frame.game.utils.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +18,7 @@ public class AuthServiceLoginTest {
 //    private UserRepository userRepository;
 
     @MockBean
-    private JwtUtil2 jwtUtil;
+    private JwtUtil jwtUtil;
 
     @MockBean
     private BCryptPasswordEncoder passwordEncoder; // Добавляем мок для PasswordEncoder
