@@ -5,6 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import main.frame.game.utils.JwtUtil;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.Nullable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -44,6 +45,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
             return;
         }
 
+        //final String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         final String authorizationHeader = request.getHeader("Authorization");
 
         String email = null;
