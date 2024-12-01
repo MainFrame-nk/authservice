@@ -4,16 +4,16 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
+import main.frame.shared.dto.RoleDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -28,8 +28,16 @@ public class JwtUtil {
         this.secretKey = new SecretKeySpec(secretKeyString.getBytes(StandardCharsets.UTF_8), SignatureAlgorithm.HS256.getJcaName());
     }
 
-    public String generateToken(String email) {
+//    public String generateToken(String email) {
+//        Map<String, Object> claims = new HashMap<>();
+//        return createToken(claims, email);
+//    }
+
+    public String generateToken(String email, Set<RoleDTO> roles) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("roles", roles.stream()
+                .map(role -> Map.of("name", role.getName())) // Сериализуем роли в Map, возможно неверно?
+                .collect(Collectors.toList()));
         return createToken(claims, email);
     }
 

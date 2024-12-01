@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -36,8 +37,10 @@ public class AuthServiceImp implements AuthService {
         ResponseEntity<String> response = userServiceClient.createUser(registerRequest);
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
+          //  List<String> roles = List.of("ROLE_USER");
+          //  String token = jwtUtil.generateToken("user@example.com", roles);
             // Шаг 2: Генерация JWT токена при успешной регистрации
-            String jwt = jwtUtil.generateToken(registerRequest.getEmail());
+            String jwt = jwtUtil.generateToken(registerRequest.getEmail(), registerRequest.getRoles());
             log.info("Новый пользователь зарегистрирован. Генерируется токен для email: {}", registerRequest.getEmail());
             return jwt;
         } else {
@@ -104,7 +107,7 @@ public class AuthServiceImp implements AuthService {
         }
 
         // Генерация JWT токена после успешной авторизации
-        String token = jwtUtil.generateToken(user.getEmail());
+        String token = jwtUtil.generateToken(user.getEmail(), user.getRoles());
         log.info("Generated token: {}", token);
 
         return token;

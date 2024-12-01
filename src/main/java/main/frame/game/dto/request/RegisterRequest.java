@@ -21,5 +21,5 @@ public class RegisterRequest {
     private String username;
     private String phoneNumber;
     private LocalDateTime dateOfCreated;
-    //private Set<RoleDTO> roles;
+    private Set<RoleDTO> roles;
 }
